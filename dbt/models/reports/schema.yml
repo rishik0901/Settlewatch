@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: rpt_daily_fails
+    description: Fail count and fail rate per day and broker
+    tests:
+      - unique_combination_of_columns:
+          arguments:
+            columns: [trade_date, broker_id]
+    columns:
+      - name: fail_rate_pct
+        tests: [not_null]
+  - name: rpt_fail_reasons
+    description: Failed trades by month, broker and reason
+  - name: rpt_broker_scorecard
+    description: Broker fail rates compared to the overall average
+    columns:
+      - name: broker_id
+        tests: [unique, not_null]

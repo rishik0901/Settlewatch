@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: raw
+    database: SETTLEWATCH
+    schema: RAW
+    description: CSV data loaded by setup/02_load_raw_data.sql
+    tables:
+      - name: trades
+        description: One row per equity trade, as loaded from trades.csv
+      - name: stocks
+        description: Securities master
+      - name: brokers
+        description: Brokers / clearing members

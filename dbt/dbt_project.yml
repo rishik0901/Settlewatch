@@ -1,0 +1,33 @@
+name: settlewatch
+version: "1.0.0"
+config-version: 2
+
+profile: settlewatch
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  # Set to true (dbt run --vars '{apply_masking: true}') after you have run
+  # governance/02_masking_policy.sql, so the policy is re-applied every
+  # time dbt rebuilds fct_trades.
+  apply_masking: false
+  # Same for governance/03_row_access_policy.sql on rpt_daily_fails.
+  apply_row_access: false
+
+models:
+  settlewatch:
+    # Every model's queries are tagged with its name (see
+    # macros/query_tag.sql), so FinOps scripts can show cost per model.
+    staging:
+      +schema: STAGING
+      +materialized: view
+    marts:
+      +schema: MARTS
+      +materialized: table
+    reports:
+      +schema: MARTS
+      +materialized: table

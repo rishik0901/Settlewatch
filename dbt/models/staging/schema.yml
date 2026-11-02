@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: stg_trades
+    description: Typed and cleaned trades
+    columns:
+      - name: trade_id
+        tests: [unique, not_null]
+      - name: trade_date
+        tests: [not_null]
+      - name: settle_date
+        tests: [not_null]
+      - name: side
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["BUY", "SELL"]
+      - name: status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["SETTLED", "FAILED"]
+      - name: broker_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_brokers')
+                field: broker_id
+      - name: symbol
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_stocks')
+                field: symbol
+
+  - name: stg_stocks
+    columns:
+      - name: symbol
+        tests: [unique, not_null]
+
+  - name: stg_brokers
+    columns:
+      - name: broker_id
+        tests: [unique, not_null]

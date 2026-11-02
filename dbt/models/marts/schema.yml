@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: fct_trades
+    description: One row per trade, with settlement outcome
+    columns:
+      - name: trade_id
+        tests: [unique, not_null]
+      - name: notional_usd
+        description: quantity x price
+        tests: [not_null]
+      - name: broker_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_broker')
+                field: broker_id
+      - name: symbol
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_stock')
+                field: symbol
+      - name: trade_date
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+
+  - name: dim_stock
+    columns:
+      - name: symbol
+        tests: [unique, not_null]
+
+  - name: dim_broker
+    columns:
+      - name: broker_id
+        tests: [unique, not_null]
+
+  - name: dim_date
+    columns:
+      - name: date_day
+        tests: [unique, not_null]
